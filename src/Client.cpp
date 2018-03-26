@@ -35,6 +35,7 @@ int main(int argc, char *argv[]){
         fprintf(stderr, "usage: client hostname\n");
         exit(1);
     }
+
     //assign the hostname to the first command line argument
     if((he=gethostbyname(argv[1])) == NULL){
         perror("gethostbyname");
@@ -50,6 +51,7 @@ int main(int argc, char *argv[]){
     their_addr.sin_port = htons(PORT);
     their_addr.sin_addr = *((struct in_addr *)he->h_addr);
     memset(&(their_addr.sin_zero), '\0', 8);
+
     //check for connection
     if(connect(sockfd, (struct sockaddr *)&their_addr, sizeof(struct sockaddr)) == -1){
         perror("connect");
