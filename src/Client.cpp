@@ -67,7 +67,9 @@ int main(int argc, char *argv[]){
 	bool loggedIn = false;
 	std::string input;
 	while(!loggedIn){
-		recv(sockfd, buf, 127, 0);
+
+
+		recv(sockfd, buf, 512, 0);
 		std::cout << "[Server]" << buf;
 
 		//Send selection
