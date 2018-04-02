@@ -1,18 +1,18 @@
 /*
- * Utilities.cpp
+ * MenuOptions.cpp
  *
  *  Created on: Mar 24, 2018
  *      Author: justin
  */
 
 
+#include "MenuOptions.h"
+
 #include <iostream>
 #include <regex>
-#include "Utilities.h"
 
-using namespace std;
 
-std::string getUserName() {
+std::string MenuOptions::getUserName() {
     bool validated = false;
     std::string input;
     while(!validated){
@@ -27,7 +27,7 @@ std::string getUserName() {
     return input;
 }
 
-std::string getPassword() {
+std::string MenuOptions::getPassword() {
     bool validated = false;
     std::string input;
     while(!validated){
@@ -42,7 +42,7 @@ std::string getPassword() {
     return input;
 }
 
-std::string getTimeDate(std::string dateType) {
+std::string MenuOptions::getTimeDate(std::string dateType) {
     bool validated = false;
     std::string input;
     while(!validated){
@@ -68,33 +68,7 @@ std::string getTimeDate(std::string dateType) {
     return input;
 }
 
-//std::string getTime(std::string timeType) {
-//    bool validated = false;
-//    std::string input;
-//    while(!validated){
-//        if(!timeType.compare("OLD")){
-//            std::cout << "Please enter old appointment time in the format hh:mm using the 24 hour clock\n";
-//        }else if(!timeType.compare("UPDATE")){
-//            std::cout << "Please enter updated appointment time in the format hh:mm using the 24 hour clock\n";
-//        }else if(!timeType.compare("START")){
-//            std::cout << "Please enter starting time in the format hh:mm using the 24 hour clock\n";
-//        }else if(!timeType.compare("END")){
-//            std::cout << "Please enter ending time in the format hh:mm using the 24 hour clock\n";
-//        }else {
-//            std::cout << "Please enter new appointment time in the format hh:mm using the 24 hour clock\n";
-//        }
-//        std::getline(std::cin, input);
-//        std::regex pattern("^\\d{2}[\\:]\\d{2}$");
-//        if (!std::regex_match(input, pattern)) {
-//            std::cout << "Time must be in hh:mm format please try again" << '\n';
-//        }else{
-//            validated = true;
-//        }
-//    }
-//    return input;
-//}
-
-std::string getMemo(std::string dateType) {
+std::string MenuOptions::getMemo(std::string dateType) {
     bool validated = false;
     std::string input;
     while(!validated){
@@ -115,7 +89,7 @@ std::string getMemo(std::string dateType) {
     return input;
 }
 
-std::string getPlace(std::string dateType) {
+std::string MenuOptions::getPlace(std::string dateType) {
     bool validated = false;
     std::string input;
     while(!validated){
@@ -152,7 +126,7 @@ std::string getName() {
     return input;
 }
 
-std::string getEmail() {
+std::string MenuOptions::getEmail() {
     bool validated = false;
     std::string input;
     while(!validated){
@@ -168,7 +142,7 @@ std::string getEmail() {
 }
 
 
-std::string getPhone() {
+std::string MenuOptions::getPhone() {
     bool validated = false;
     std::string input;
     while(!validated){

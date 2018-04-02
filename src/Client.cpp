@@ -18,7 +18,8 @@
 
 #include <iostream>
 #include <string>
-#include "Utilities.h"
+
+#include "MenuOptions.h"
 
 #define PORT 336958
 #define MAXDATASIZE 512
@@ -29,6 +30,7 @@ int main(int argc, char *argv[]){
 	char sendbuf[MAXDATASIZE];
 	struct hostent *he;
 	struct sockaddr_in their_addr;
+	MenuOptions menu;
 
 	//Check for command line arguments
 	if(argc != 2){
@@ -261,10 +263,10 @@ int main(int argc, char *argv[]){
 				}
 				buf[numbytes] = '\0';
 				printf("[Server]: %s\n", buf);
-				std::string beginTime = getTimeDate("NEW");
-				std::string endTime = getTimeDate("END");
-				std::string memo = getMemo("NEW");
-				std::string place = getPlace("NEW");
+				std::string beginTime = menu.getTimeDate("NEW");
+				std::string endTime = menu.getTimeDate("END");
+				std::string memo = menu.getMemo("NEW");
+				std::string place = menu.getPlace("NEW");
 
 
 				bool conflict = true;
@@ -279,8 +281,8 @@ int main(int argc, char *argv[]){
 						conflict = false;
 					}else{
 						std::cout << "There is already an appointment at that time please reschedule\n";
-						beginTime = getTimeDate("NEW");
-						endTime = getTimeDate("NEW");
+						beginTime = menu.getTimeDate("NEW");
+						endTime = menu.getTimeDate("NEW");
 					}
 				}
 
@@ -295,7 +297,7 @@ int main(int argc, char *argv[]){
 				}
 				buf[numbytes] = '\0';
 				printf("[Server]: %s\n", buf);
-				std::string beginTime = getTimeDate("OLD");
+				std::string beginTime = menu.getTimeDate("OLD");
 //				std::string appTime = getTime("OLD");
 
 				send(sockfd, beginTime.c_str(), 127, 0);
@@ -309,11 +311,11 @@ int main(int argc, char *argv[]){
 				}
 				buf[numbytes] = '\0';
 				printf("[Server]: %s\n", buf);
-				std::string oldBeginDate = getTimeDate("OLD");
-				std::string newBeginDate = getTimeDate("UPDATE");
-				std::string newEndDate = getTimeDate("END");
-				std::string newMemo = getMemo("UPDATE");
-				std::string newPlace = getPlace("UPDATE");
+				std::string oldBeginDate = menu.getTimeDate("OLD");
+				std::string newBeginDate = menu.getTimeDate("UPDATE");
+				std::string newEndDate = menu.getTimeDate("END");
+				std::string newMemo = menu.getMemo("UPDATE");
+				std::string newPlace = menu.getPlace("UPDATE");
 
 				bool conflict = true;
 				while (conflict){
@@ -327,8 +329,8 @@ int main(int argc, char *argv[]){
 						conflict = false;
 					}else{
 						std::cout << "There is already an appointment at that time please reschedule\n";
-						newBeginDate = getTimeDate("UPDATE");
-						newEndDate = getTimeDate("UPDATE");
+						newBeginDate = menu.getTimeDate("UPDATE");
+						newEndDate = menu.getTimeDate("UPDATE");
 					}
 				}
 				send(sockfd, newMemo.c_str(), 127, 0);
@@ -338,15 +340,15 @@ int main(int argc, char *argv[]){
 			}
 			else if(!input.compare("4")){
 				//Get Appointment at a time
-				std::string beginTime = getTimeDate("OLD");
+				std::string beginTime = menu.getTimeDate("OLD");
 //				std::string appTime = getTime("OLD");
 				send(sockfd, beginTime.c_str(), 127, 0);
 //				send(sockfd, appTime.c_str(), 127, 0);
 			}
 			else if(!input.compare("5")){
 				//Get Appointment in range
-				std::string startDate = getTimeDate("START");
-				std::string endDate = getTimeDate("END");
+				std::string startDate = menu.getTimeDate("START");
+				std::string endDate = menu.getTimeDate("END");
 
 				std::cout << startDate << " " << endDate << "\n";
 
