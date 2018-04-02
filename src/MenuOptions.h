@@ -17,6 +17,8 @@ class MenuOptions {
 private:
 
 public:
+	bool login(int sockfd, char *buf, bool loggedIn);
+	bool newAccount(int sockfd, char *buf, bool loggedIn);
 	string getUserName();
 	string getPassword();
 	string getName();

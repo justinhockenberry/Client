@@ -74,86 +74,94 @@ int main(int argc, char *argv[]){
 		std::getline(std::cin, input);
 		send(sockfd, input.c_str(), 127, 0);
 		std::string loginChoice = input;
-		bool validated = false;
+//		bool validated = false;
 
 		//If user wants to login
 		if(!loginChoice.compare("1")) {
-			while (!validated) {
+//			while (!validated) {
 
-				std::string input = "";
-
-				std::cout << "Please enter username\n";
-				std::getline(std::cin, input);
-
-				send(sockfd, input.c_str(), 127, 0);
+				loggedIn = menu.login(sockfd, buf, loggedIn);
 
 
-				input = "";
-
-				std::cout << "Please enter password\n";
-				std::getline(std::cin, input);
-				send(sockfd, input.c_str(), 127, 0);
-
-				numbytes = recv(sockfd, buf, 127, 0);
-				buf[numbytes] = '\0';
-				std::string success = buf;
-				if(!success.compare("Success")){
-					validated = true;
-					loggedIn = true;
-					std::cout << "Log in successful\n";
-				}
-				else{
-					std::cout << "Log in failure please retry\n";
-				}
-			}
+//				std::string input = "";
+//
+//				std::cout << "Please enter username\n";
+//				std::getline(std::cin, input);
+//
+//				send(sockfd, input.c_str(), 127, 0);
+//
+//
+//				input = "";
+//
+//				std::cout << "Please enter password\n";
+//				std::getline(std::cin, input);
+//				send(sockfd, input.c_str(), 127, 0);
+//
+//				numbytes = recv(sockfd, buf, 127, 0);
+//				buf[numbytes] = '\0';
+//				std::string success = buf;
+//				if(!success.compare("Success")){
+//					validated = true;
+//					loggedIn = true;
+//					std::cout << "Log in successful\n";
+//				}
+//				else{
+//					std::cout << "Log in failure please retry\n";
+//				}
+//			}
 		}// If user wants to create an account
 		else if(!loginChoice.compare("2")){
+
+			loggedIn = menu.newAccount(sockfd, buf, loggedIn);
+
+
 			//Get username and check if user already exists
-			bool exists =true;
-			while(exists){
-
-
-				std::string input = "";
-				std::cout << "Please enter username\n";
-				std::getline(std::cin, input);
-
-				send(sockfd, input.c_str(), 127, 0);
-
-				numbytes = recv(sockfd, buf, 127, 0);
-				buf[numbytes] = '\0';
-				std::string success = buf;
-				if(!success.compare("Success")){
-					exists = false;
-				}
-				else{
-					std::cout << "Username already exists\n";
-				}
-			}
-
-
-
-			input = "";
-			std::cout << "Please enter password\n";
-			std::getline(std::cin, input);
-			send(sockfd, input.c_str(), 127, 0);
-
-			input = "";
-			std::cout << "Please enter name\n";
-			std::getline(std::cin, input);
-			send(sockfd, input.c_str(), 127, 0);
-
-
-			input = "";
-			std::cout << "Please enter your email\n";
-			std::getline(std::cin, input);
-			send(sockfd, input.c_str(), 127, 0);
-
-			input = "";
-			std::cout << "Please enter phone consisting of only 10 digits\n";
-			std::getline(std::cin, input);
-			send(sockfd, input.c_str(), 127, 0);
-			validated = true;
-			loggedIn = true;
+//			bool exists =true;
+//			while(exists){
+//
+//
+//
+//				std::string input = "";
+//				std::cout << "Please enter username\n";
+//				std::getline(std::cin, input);
+//
+//				send(sockfd, input.c_str(), 127, 0);
+//
+//				numbytes = recv(sockfd, buf, 127, 0);
+//				buf[numbytes] = '\0';
+//				std::string success = buf;
+//				if(!success.compare("Success")){
+//					exists = false;
+//				}
+//				else{
+//					std::cout << "Username already exists\n";
+//				}
+//			}
+//
+//
+//
+//			input = "";
+//			std::cout << "Please enter password\n";
+//			std::getline(std::cin, input);
+//			send(sockfd, input.c_str(), 127, 0);
+//
+//			input = "";
+//			std::cout << "Please enter name\n";
+//			std::getline(std::cin, input);
+//			send(sockfd, input.c_str(), 127, 0);
+//
+//
+//			input = "";
+//			std::cout << "Please enter your email\n";
+//			std::getline(std::cin, input);
+//			send(sockfd, input.c_str(), 127, 0);
+//
+//			input = "";
+//			std::cout << "Please enter phone consisting of only 10 digits\n";
+//			std::getline(std::cin, input);
+//			send(sockfd, input.c_str(), 127, 0);
+////			validated = true;
+//			loggedIn = true;
 
 
 		}
