@@ -42,25 +42,25 @@ std::string getPassword() {
     return input;
 }
 
-std::string getDate(std::string dateType) {
+std::string getTimeDate(std::string dateType) {
     bool validated = false;
     std::string input;
     while(!validated){
         if(!dateType.compare("OLD")){
-            std::cout << "Please enter old appointment date in the format mm/dd/yyyy\n";
+            std::cout << "Please enter old appointment time (24 hour) & date in the format hh:mm mm/dd/yyyy\n";
         }else if(!dateType.compare("UPDATE")){
-            std::cout << "Please enter updated new appointment date in the format mm/dd/yyyy\n";
+            std::cout << "Please enter updated new appointment time (24 hour) & date in the format hh:mm mm/dd/yyyy\n";
         }else if(!dateType.compare("START")){
-            std::cout << "Please enter the starting date in the format mm/dd/yyyy\n";
+            std::cout << "Please enter the starting time (24 hour) & date in the format hh:mm mm/dd/yyyy\n";
         }else if(!dateType.compare("END")){
-            std::cout << "Please enter the ending date in the format mm/dd/yyyy\n";
+            std::cout << "Please enter the ending time (24 hour) & date in the format hh:mm mm/dd/yyyy\n";
         }else {
-            std::cout << "Please enter new appointment date in the format mm/dd/yyyy\n";
+            std::cout << "Please enter new appointment time (24 hour) & date in the format hh:mm mm/dd/yyyy\n";
         }
         std::getline(std::cin, input);
-        std::regex pattern("^\\d{2}[\\/]\\d{2}[\\/]\\d{4}$");
+        std::regex pattern("^\\d{2}[\\:]\\d{2}[[:space:]]\\d{2}[\\/]\\d{2}[\\/]\\d{4}$");
         if (!std::regex_match(input, pattern)) {
-            std::cout << "Date must be in mm/dd/yyyy format please try again" << '\n';
+            std::cout << "Time & date must be in hh:mm mm/dd/yyyy format please try again" << '\n';
         }else{
             validated = true;
         }
@@ -68,33 +68,33 @@ std::string getDate(std::string dateType) {
     return input;
 }
 
-std::string getTime(std::string timeType) {
-    bool validated = false;
-    std::string input;
-    while(!validated){
-        if(!timeType.compare("OLD")){
-            std::cout << "Please enter old appointment time in the format hh:mm using the 24 hour clock\n";
-        }else if(!timeType.compare("UPDATE")){
-            std::cout << "Please enter updated appointment time in the format hh:mm using the 24 hour clock\n";
-        }else if(!timeType.compare("START")){
-            std::cout << "Please enter starting time in the format hh:mm using the 24 hour clock\n";
-        }else if(!timeType.compare("END")){
-            std::cout << "Please enter ending time in the format hh:mm using the 24 hour clock\n";
-        }else {
-            std::cout << "Please enter new appointment time in the format hh:mm using the 24 hour clock\n";
-        }
-        std::getline(std::cin, input);
-        std::regex pattern("^\\d{2}[\\:]\\d{2}$");
-        if (!std::regex_match(input, pattern)) {
-            std::cout << "Date must be in mm/dd/yyyy format please try again" << '\n';
-        }else{
-            validated = true;
-        }
-    }
-    return input;
-}
+//std::string getTime(std::string timeType) {
+//    bool validated = false;
+//    std::string input;
+//    while(!validated){
+//        if(!timeType.compare("OLD")){
+//            std::cout << "Please enter old appointment time in the format hh:mm using the 24 hour clock\n";
+//        }else if(!timeType.compare("UPDATE")){
+//            std::cout << "Please enter updated appointment time in the format hh:mm using the 24 hour clock\n";
+//        }else if(!timeType.compare("START")){
+//            std::cout << "Please enter starting time in the format hh:mm using the 24 hour clock\n";
+//        }else if(!timeType.compare("END")){
+//            std::cout << "Please enter ending time in the format hh:mm using the 24 hour clock\n";
+//        }else {
+//            std::cout << "Please enter new appointment time in the format hh:mm using the 24 hour clock\n";
+//        }
+//        std::getline(std::cin, input);
+//        std::regex pattern("^\\d{2}[\\:]\\d{2}$");
+//        if (!std::regex_match(input, pattern)) {
+//            std::cout << "Time must be in hh:mm format please try again" << '\n';
+//        }else{
+//            validated = true;
+//        }
+//    }
+//    return input;
+//}
 
-std::string getReason(std::string dateType) {
+std::string getMemo(std::string dateType) {
     bool validated = false;
     std::string input;
     while(!validated){
@@ -108,6 +108,27 @@ std::string getReason(std::string dateType) {
         std::getline(std::cin, input);
         if (input.find(";") != std::string::npos) {
             std::cout << "Your appointment reason cannot contain the ; character" << '\n';
+        }else{
+            validated = true;
+        }
+    }
+    return input;
+}
+
+std::string getPlace(std::string dateType) {
+    bool validated = false;
+    std::string input;
+    while(!validated){
+        if(!dateType.compare("OLD")){
+            std::cout << "Please enter old appointment place\n";
+        }else if(!dateType.compare("UPDATE")){
+            std::cout << "Please enter updated appointment place\n";
+        }else {
+            std::cout << "Please enter new appointment place\n";
+        }
+        std::getline(std::cin, input);
+        if (input.find(";") != std::string::npos) {
+            std::cout << "Your appointment place cannot contain the ; character" << '\n';
         }else{
             validated = true;
         }

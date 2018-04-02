@@ -261,14 +261,17 @@ int main(int argc, char *argv[]){
 				}
 				buf[numbytes] = '\0';
 				printf("[Server]: %s\n", buf);
-				std::string appDate = getDate("NEW");
-				std::string appTime = getTime("NEW");
-				std::string appReason = getReason("NEW");
+				std::string beginTime = getTimeDate("NEW");
+				std::string endTime = getTimeDate("END");
+				std::string memo = getMemo("NEW");
+				std::string place = getPlace("NEW");
+
 
 				bool conflict = true;
 				while (conflict){
-					send(sockfd, appDate.c_str(), 127, 0);
-					send(sockfd, appTime.c_str(), 127, 0);
+					send(sockfd, beginTime.c_str(), 127, 0);
+					send(sockfd, endTime.c_str(), 127, 0);
+
 					numbytes = recv(sockfd, buf, 127, 0);
 					buf[numbytes] = '\0';
 					std::string success = buf;
@@ -276,11 +279,13 @@ int main(int argc, char *argv[]){
 						conflict = false;
 					}else{
 						std::cout << "There is already an appointment at that time please reschedule\n";
-						appDate = getDate("NEW");
-						appDate = getTime("NEW");
+						beginTime = getTimeDate("NEW");
+						endTime = getTimeDate("NEW");
 					}
 				}
-				send(sockfd, appReason.c_str(), 127, 0);
+
+				send(sockfd, memo.c_str(), 127, 0);
+				send(sockfd, place.c_str(), 127, 0);
 			}
 			else if(!input.compare("2")){
 				//Remove appointment
@@ -290,11 +295,11 @@ int main(int argc, char *argv[]){
 				}
 				buf[numbytes] = '\0';
 				printf("[Server]: %s\n", buf);
-				std::string appDate = getDate("OLD");
-				std::string appTime = getTime("OLD");
+				std::string beginTime = getTimeDate("OLD");
+//				std::string appTime = getTime("OLD");
 
-				send(sockfd, appDate.c_str(), 127, 0);
-				send(sockfd, appTime.c_str(), 127, 0);
+				send(sockfd, beginTime.c_str(), 127, 0);
+//				send(sockfd, appTime.c_str(), 127, 0);
 			}
 			else if(!input.compare("3")){
 				//Update appointment
@@ -304,15 +309,17 @@ int main(int argc, char *argv[]){
 				}
 				buf[numbytes] = '\0';
 				printf("[Server]: %s\n", buf);
-				std::string oldAppDate = getDate("OLD");
-				std::string oldAppTime = getTime("OLD");
-				std::string newAppDate = getDate("UPDATE");
-				std::string newAppTime = getTime("UPDATE");
-				std::string newAppReason = getReason("UPDATE") ;
+				std::string oldBeginDate = getTimeDate("OLD");
+				std::string newBeginDate = getTimeDate("UPDATE");
+				std::string newEndDate = getTimeDate("END");
+				std::string newMemo = getMemo("UPDATE");
+				std::string newPlace = getPlace("UPDATE");
+
 				bool conflict = true;
 				while (conflict){
-					send(sockfd, newAppDate.c_str(), 127, 0);
-					send(sockfd, newAppTime.c_str(), 127, 0);
+					send(sockfd, newBeginDate.c_str(), 127, 0);
+					send(sockfd, newEndDate.c_str(), 127, 0);
+
 					numbytes = recv(sockfd, buf, 127, 0);
 					buf[numbytes] = '\0';
 					std::string success = buf;
@@ -320,26 +327,26 @@ int main(int argc, char *argv[]){
 						conflict = false;
 					}else{
 						std::cout << "There is already an appointment at that time please reschedule\n";
-						newAppDate = getDate("UPDATE");
-						newAppTime = getTime("UPDATE");
+						newBeginDate = getTimeDate("UPDATE");
+						newEndDate = getTimeDate("UPDATE");
 					}
 				}
-				send(sockfd, newAppReason.c_str(), 127, 0);
-				send(sockfd, oldAppTime.c_str(), 127, 0);
-				send(sockfd, oldAppDate.c_str(), 127, 0);
+				send(sockfd, newMemo.c_str(), 127, 0);
+				send(sockfd, newPlace.c_str(), 127, 0);
+				send(sockfd, oldBeginDate.c_str(), 127, 0);
 
 			}
 			else if(!input.compare("4")){
 				//Get Appointment at a time
-				std::string appDate = getDate("OLD");
-				std::string appTime = getTime("OLD");
-				send(sockfd, appDate.c_str(), 127, 0);
-				send(sockfd, appTime.c_str(), 127, 0);
+				std::string beginTime = getTimeDate("OLD");
+//				std::string appTime = getTime("OLD");
+				send(sockfd, beginTime.c_str(), 127, 0);
+//				send(sockfd, appTime.c_str(), 127, 0);
 			}
 			else if(!input.compare("5")){
 				//Get Appointment in range
-				std::string startDate = getDate("START");
-				std::string endDate = getDate("END");
+				std::string startDate = getTimeDate("START");
+				std::string endDate = getTimeDate("END");
 
 				std::cout << startDate << " " << endDate << "\n";
 

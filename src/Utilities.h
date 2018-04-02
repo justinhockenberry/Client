@@ -16,8 +16,9 @@ std::string getPassword();
 std::string getName();
 std::string getEmail();
 std::string getPhone();
-std::string getDate(std::string);
-std::string getTime(std::string);
-std::string getReason(std::string);
+std::string getTimeDate(std::string);
+//std::string getTime(std::string);
+std::string getMemo(std::string);
+std::string getPlace(std::string);
 
 #endif //CLIENT_UTILITIES_H
