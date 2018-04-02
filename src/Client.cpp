@@ -61,11 +61,7 @@ int main(int argc, char *argv[]){
 	}
 
 	printf("connection has been established with server. Type any message for server\n");
-	//main connection loop
-	/**
-	 * Login sequence
-	 */
-	//Get Login Menu
+
 	bool loggedIn = false;
 	std::string input;
 	while(!loggedIn){
@@ -83,34 +79,19 @@ int main(int argc, char *argv[]){
 		//If user wants to login
 		if(!loginChoice.compare("1")) {
 			while (!validated) {
-				//Get username
-				//                input = getUserName();
-				//            	bool validated = false;
+
 				std::string input = "";
-				//            	while(!validated){
+
 				std::cout << "Please enter username\n";
 				std::getline(std::cin, input);
-				//            		if (input.find(";") != std::string::npos) {
-				//            			std::cout << "Username cannot contain the ; character" << '\n';
-				//            		}else{
-				//            			validated = true;
-				//            		}
-				//            	}
+
 				send(sockfd, input.c_str(), 127, 0);
 
-				//Get password
-				//                input = getPassword();
-				//            	validated = false;
+
 				input = "";
-				//            	while(!validated){
+
 				std::cout << "Please enter password\n";
 				std::getline(std::cin, input);
-				//            		if (input.find(";") != std::string::npos) {
-				//            			std::cout << "Password cannot contain the ; character" << '\n';
-				//            		}else{
-				//            			validated = true;
-				//            		}
-				//            	}
 				send(sockfd, input.c_str(), 127, 0);
 
 				numbytes = recv(sockfd, buf, 127, 0);
@@ -131,18 +112,11 @@ int main(int argc, char *argv[]){
 			bool exists =true;
 			while(exists){
 
-				//                input = getUserName();
-				//            	bool validated = false;
+
 				std::string input = "";
-				//            	while(!validated){
 				std::cout << "Please enter username\n";
 				std::getline(std::cin, input);
-				//            		if (input.find(";") != std::string::npos) {
-				//            			std::cout << "Username cannot contain the ; character" << '\n';
-				//            		}else{
-				//            			validated = true;
-				//            		}
-				//            	}
+
 				send(sockfd, input.c_str(), 127, 0);
 
 				numbytes = recv(sockfd, buf, 127, 0);
@@ -157,65 +131,26 @@ int main(int argc, char *argv[]){
 			}
 
 
-			//Get password
-			//            input = getPassword();
-			//            bool validated = false;
+
 			input = "";
-			//            while(!validated){
 			std::cout << "Please enter password\n";
 			std::getline(std::cin, input);
-			//            	if (input.find(";") != std::string::npos) {
-			//            		std::cout << "Password cannot contain the ; character" << '\n';
-			//            	}else{
-			//            		validated = true;
-			//            	}
-			//            }
 			send(sockfd, input.c_str(), 127, 0);
 
-			//Get name
-			//            input = getName();
-			//            validated = false;
 			input = "";
-			//            while(!validated){
 			std::cout << "Please enter name\n";
 			std::getline(std::cin, input);
-			//            	if (input.find(";") != std::string::npos) {
-			//            		std::cout << "Your name cannot contain the ; character" << '\n';
-			//            	}else{
-			//            		validated = true;
-			//            	}
-			//            }
 			send(sockfd, input.c_str(), 127, 0);
 
-			//Get email
-			//            input = getEmail();
-			//            validated = false;
+
 			input = "";
-			//            while(!validated){
 			std::cout << "Please enter your email\n";
 			std::getline(std::cin, input);
-			//            	if (input.find(";") != std::string::npos) {
-			//            		std::cout << "Your email cannot contain the ; character" << '\n';
-			//            	}else{
-			//            		validated = true;
-			//            	}
-			//            }
 			send(sockfd, input.c_str(), 127, 0);
 
-			//Get phone number
-			//            input = getPhone();
-			//            validated = false;
 			input = "";
-			//            while(!validated){
 			std::cout << "Please enter phone consisting of only 10 digits\n";
 			std::getline(std::cin, input);
-			//            	std::regex pattern("^\\d{10}$");
-			//            	if (!std::regex_match(input, pattern)) {
-			//            		std::cout << "Your phone can only consist of 10 digits" << '\n';
-			//            	}else{
-			//            		validated = true;
-			//            	}
-			//            }
 			send(sockfd, input.c_str(), 127, 0);
 			validated = true;
 			loggedIn = true;
@@ -298,10 +233,7 @@ int main(int argc, char *argv[]){
 				buf[numbytes] = '\0';
 				printf("[Server]: %s\n", buf);
 				std::string beginTime = menu.getTimeDate("OLD");
-//				std::string appTime = getTime("OLD");
-
 				send(sockfd, beginTime.c_str(), 127, 0);
-//				send(sockfd, appTime.c_str(), 127, 0);
 			}
 			else if(!input.compare("3")){
 				//Update appointment
@@ -341,9 +273,7 @@ int main(int argc, char *argv[]){
 			else if(!input.compare("4")){
 				//Get Appointment at a time
 				std::string beginTime = menu.getTimeDate("OLD");
-//				std::string appTime = getTime("OLD");
 				send(sockfd, beginTime.c_str(), 127, 0);
-//				send(sockfd, appTime.c_str(), 127, 0);
 			}
 			else if(!input.compare("5")){
 				//Get Appointment in range
@@ -361,67 +291,31 @@ int main(int argc, char *argv[]){
 			}
 			else if(!input.compare("6")){
 				//A) Modify name
-				//                input = getName();
-				//            	bool validated = false;
+
 				std::string input;
-				//            	while(!validated){
 				std::cout << "Please enter name\n";
 				std::getline(std::cin, input);
-				//            		if (input.find(";") != std::string::npos) {
-				//            			std::cout << "Your name cannot contain the ; character" << '\n';
-				//            		}else{
-				//            			validated = true;
-				//            		}
-				//            	}
 				send(sockfd, input.c_str(), 127, 0);
 
 			}else if(!input.compare("7")){
 				//Modify password
-				//                input = getPassword();
-				//            	bool validated = false;
 				input = "";
-				//            	while(!validated){
 				std::cout << "Please enter password\n";
 				std::getline(std::cin, input);
-				//            		if (input.find(";") != std::string::npos) {
-				//            			std::cout << "Password cannot contain the ; character" << '\n';
-				//            		}else{
-				//            			validated = true;
-				//            		}
-				//            	}
 				send(sockfd, input.c_str(), 127, 0);
 			}
 			else if(!input.compare("8")){
 				//Modify phone number
-				//                input = getPhone();
-				//            	bool validated = false;
 				input = "";
-				//            	while(!validated){
 				std::cout << "Please enter phone consisting of only 10 digits\n";
 				std::getline(std::cin, input);
-				//            		std::regex pattern("^\\d{10}$");
-				//            		if (!std::regex_match(input, pattern)) {
-				//            			std::cout << "Your phone can only consist of 10 digits" << '\n';
-				//            		}else{
-				//            			validated = true;
-				//            		}
-				//            	}
 				send(sockfd, input.c_str(), 127, 0);
 			}
 			else if(!input.compare("9")){
 				//Modify email
-				//                input = getEmail();
-				//            	bool validated = false;
 				input = "";
-				//            	while(!validated){
 				std::cout << "Please enter your email\n";
 				std::getline(std::cin, input);
-				//            		if (input.find(";") != std::string::npos) {
-				//            			std::cout << "Your email cannot contain the ; character" << '\n';
-				//            		}else{
-				//            			validated = true;
-				//            		}
-				//            	}
 				send(sockfd, input.c_str(), 127, 0);
 			}
 			else if(!input.compare("10")){
