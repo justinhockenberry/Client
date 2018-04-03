@@ -17,20 +17,20 @@ class MenuOptions {
 private:
 
 public:
-	bool login(int sockfd, char *buf, bool loggedIn);
-	bool newAccount(int sockfd, char *buf, bool loggedIn);
-	void addAppointment(int sockfd,char * buf);
-	void deleteAppointment(int sockfd,char * buf);
-	void updateAppointment(int sockfd,char * buf);
+	bool login(int sockfd, char *buffer, bool loggedIn);
+	bool newAccount(int sockfd, char *buffer, bool loggedIn);
+	void addAppointment(int sockfd,char * buffer);
+	void deleteAppointment(int sockfd,char * buffer);
+	void updateAppointment(int sockfd,char * buffer);
 
-	void displayAppointTime(int sockfd,char * buf);
-	void displayAppointRange(int sockfd,char * buf);
+	void displayAppointTime(int sockfd,char * buffer);
+	void displayAppointRange(int sockfd,char * buffer);
 
-	void changeName(int sockfd,char * buf);
-	void changePassword(int sockfd,char * bufvv);
-	void changePhone(int sockfd,char * buf);
-	void changeEmail(int sockfd,char * buf);
-	void deleteUser(int sockfd,char * buf);
+	void changeName(int sockfd,char * buffer);
+	void changePassword(int sockfd,char * buffervv);
+	void changePhone(int sockfd,char * buffer);
+	void changeEmail(int sockfd,char * buffer);
+	void deleteUser(int sockfd,char * buffer);
 	string getUserName();
 	string getPassword();
 	string getName();

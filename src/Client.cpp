@@ -26,8 +26,8 @@
 
 int main(int argc, char *argv[]){
 	int sockfd, numbytes;
-	char buf[MAXDATASIZE];
-	char sendbuf[MAXDATASIZE];
+	char buffer[MAXDATASIZE];
+	char sendbuffer[MAXDATASIZE];
 	struct hostent *he;
 	struct sockaddr_in their_addr;
 	MenuOptions menu;
@@ -60,28 +60,27 @@ int main(int argc, char *argv[]){
 		exit(1);
 	}
 
-	printf("connection has been established with server. Type any message for server\n");
+//	printf("connection has been established with server. Type any message for server\n");
 
 	bool loggedIn = false;
-	std::string input;
+	std::string selection;
 	while(!loggedIn){
 
 
-		recv(sockfd, buf, 512, 0);
-		std::cout << "[Server]" << buf;
+		recv(sockfd, buffer, 512, 0);
+		std::cout << "[Server]" << buffer;
 
 
-		std::getline(std::cin, input);
-		send(sockfd, input.c_str(), 127, 0);
-		std::string loginChoice = input;
+		std::getline(std::cin, selection);
+		send(sockfd, selection.c_str(), 127, 0);
 
-		if(!loginChoice.compare("1")) {
+		if(!selection.compare("1")) {
 
-			loggedIn = menu.login(sockfd, buf, loggedIn);
+			loggedIn = menu.login(sockfd, buffer, loggedIn);
 		}
-		else if(!loginChoice.compare("2")){
+		else if(!selection.compare("2")){
 
-			loggedIn = menu.newAccount(sockfd, buf, loggedIn);
+			loggedIn = menu.newAccount(sockfd, buffer, loggedIn);
 		}
 		else{
 			std::cout << "Invalid Choice\n";
@@ -91,86 +90,86 @@ int main(int argc, char *argv[]){
 
 	for(;;){
 
-		if ((numbytes = recv(sockfd, buf, 512, 0)) == -1) {
+		if ((numbytes = recv(sockfd, buffer, 512, 0)) == -1) {
 			perror("recv");
 			exit(1);
 		}
-		buf[numbytes] = '\0';
-		printf("[Server]: %s\n", buf);
+		buffer[numbytes] = '\0';
+		printf("[Server]: %s\n", buffer);
 
-		std::getline(std::cin, input);
+		std::getline(std::cin, selection);
 
-		numbytes=sizeof(input.c_str());
+		numbytes=sizeof(selection.c_str());
 
-		if(numbytes == 0 || strncmp(input.c_str(), "bye", 3) == 0){
+		if(numbytes == 0 || strncmp(selection.c_str(), "bye", 3) == 0){
 			printf("Bye\n");
 			break;
 		}else {
 
-			if ((numbytes = send(sockfd, input.c_str(), 127, 0)) == -1) {
+			if ((numbytes = send(sockfd, selection.c_str(), 127, 0)) == -1) {
 				perror("send");
 				close(sockfd);
 				exit(1);
 			}
 
-			printf("[Client]: %s\n", input.c_str());
+//			printf("[Client]: %s\n", selection.c_str());
 
 
-			if(!input.compare("1")){
+			if(!selection.compare("1")){
 
-				menu.addAppointment(sockfd, buf);
+				menu.addAppointment(sockfd, buffer);
 			}
-			else if(!input.compare("2")){
+			else if(!selection.compare("2")){
 
-				menu.deleteAppointment(sockfd, buf);
+				menu.deleteAppointment(sockfd, buffer);
 			}
-			else if(!input.compare("3")){
+			else if(!selection.compare("3")){
 
-				menu.updateAppointment(sockfd, buf);
+				menu.updateAppointment(sockfd, buffer);
 			}
-			else if(!input.compare("4")){
+			else if(!selection.compare("4")){
 
-				menu.displayAppointTime(sockfd, buf);
+				menu.displayAppointTime(sockfd, buffer);
 			}
-			else if(!input.compare("5")){
+			else if(!selection.compare("5")){
 
-				menu.displayAppointRange(sockfd, buf);
+				menu.displayAppointRange(sockfd, buffer);
 			}
-			else if(!input.compare("6")){
+			else if(!selection.compare("6")){
 
-				menu.changeName(sockfd, buf);
+				menu.changeName(sockfd, buffer);
 			}
-			else if(!input.compare("7")){
+			else if(!selection.compare("7")){
 
-				menu.changePassword(sockfd, buf);
+				menu.changePassword(sockfd, buffer);
 			}
-			else if(!input.compare("8")){
+			else if(!selection.compare("8")){
 
-				menu.changePhone(sockfd, buf);
+				menu.changePhone(sockfd, buffer);
 			}
-			else if(!input.compare("9")){
+			else if(!selection.compare("9")){
 
-				menu.changeEmail(sockfd, buf);
+				menu.changeEmail(sockfd, buffer);
 			}
-			else if(!input.compare("10")){
+			else if(!selection.compare("10")){
 
-				menu.deleteUser(sockfd, buf);
+				menu.deleteUser(sockfd, buffer);
 				break;
 			}
-			else if(!input.compare("11")){
+			else if(!selection.compare("11")){
 				std::cout << "Good Bye!\n";
 				break;
 			}
 			else{
-				std::cout << "Invalid Input\n";
+				std::cout << "Invalid selection\n";
 			}
 
-			if ((numbytes = recv(sockfd, buf, 127, 0)) == -1) {
+			if ((numbytes = recv(sockfd, buffer, 127, 0)) == -1) {
 				perror("recv");
 				exit(1);
 			}
-			buf[numbytes] = '\0';
-			printf("[Server]: %s\n", buf);
+			buffer[numbytes] = '\0';
+			printf("[Server]: %s\n", buffer);
 		}
 	}
 

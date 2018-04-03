@@ -21,12 +21,12 @@
 
 
 
-bool MenuOptions::login(int sockfd, char *buf, bool loggedIn) {
+bool MenuOptions::login(int sockfd, char *buffer, bool loggedIn) {
 
-	long numbytes;
+	long bytes;
 	std::string input = "";
 
-	std::cout << "Please enter username\n";
+	std::cout << "Enter username\n";
 	std::getline(std::cin, input);
 
 	send(sockfd, input.c_str(), 127, 0);
@@ -34,13 +34,13 @@ bool MenuOptions::login(int sockfd, char *buf, bool loggedIn) {
 
 	input = "";
 
-	std::cout << "Please enter password\n";
+	std::cout << "Enter password\n";
 	std::getline(std::cin, input);
 	send(sockfd, input.c_str(), 127, 0);
 
-	numbytes = recv(sockfd, buf, 127, 0);
-	buf[numbytes] = '\0';
-	std::string success = buf;
+	bytes = recv(sockfd, buffer, 127, 0);
+	buffer[bytes] = '\0';
+	std::string success = buffer;
 	if(!success.compare("Success")){
 
 		loggedIn = true;
@@ -51,21 +51,21 @@ bool MenuOptions::login(int sockfd, char *buf, bool loggedIn) {
 	}
 	return loggedIn;
 }
-bool MenuOptions::newAccount(int sockfd, char *buf, bool loggedIn) {
+bool MenuOptions::newAccount(int sockfd, char *buffer, bool loggedIn) {
 	bool exists =true;
 	string input;
-	long numbytes;
+	long bytes;
 	while(exists){
 
 		std::string input = "";
-		std::cout << "Please enter username\n";
+		std::cout << "Enter username\n";
 		std::getline(std::cin, input);
 
 		send(sockfd, input.c_str(), 127, 0);
 
-		numbytes = recv(sockfd, buf, 127, 0);
-		buf[numbytes] = '\0';
-		std::string success = buf;
+		bytes = recv(sockfd, buffer, 127, 0);
+		buffer[bytes] = '\0';
+		std::string success = buffer;
 		if(!success.compare("Success")){
 			exists = false;
 		}
@@ -75,37 +75,37 @@ bool MenuOptions::newAccount(int sockfd, char *buf, bool loggedIn) {
 	}
 
 	input = "";
-	std::cout << "Please enter password\n";
+	std::cout << "Enter password\n";
 	std::getline(std::cin, input);
 	send(sockfd, input.c_str(), 127, 0);
 
 	input = "";
-	std::cout << "Please enter name\n";
+	std::cout << "Enter name\n";
 	std::getline(std::cin, input);
 	send(sockfd, input.c_str(), 127, 0);
 
 
 	input = "";
-	std::cout << "Please enter your email\n";
+	std::cout << "Enter your email\n";
 	std::getline(std::cin, input);
 	send(sockfd, input.c_str(), 127, 0);
 
 	input = "";
-	std::cout << "Please enter phone consisting of only 10 digits\n";
+	std::cout << "Enter 10 digit phone number\n";
 	std::getline(std::cin, input);
 	send(sockfd, input.c_str(), 127, 0);
-	//			validated = true;
+
 	return loggedIn = true;
 }
-void MenuOptions::addAppointment(int sockfd, char *buf) {
-	long numbytes;
+void MenuOptions::addAppointment(int sockfd, char *buffer) {
+	long bytes;
 
-	if ((numbytes = recv(sockfd, buf, 512, 0)) == -1) {
+	if ((bytes = recv(sockfd, buffer, 512, 0)) == -1) {
 		perror("recv");
 		exit(1);
 	}
-	buf[numbytes] = '\0';
-	printf("[Server]: %s\n", buf);
+	buffer[bytes] = '\0';
+	printf("[Server]: %s\n", buffer);
 	std::string beginTime = this->getTimeDate("NEW");
 	std::string endTime = this->getTimeDate("END");
 	std::string memo = this->getMemo("NEW");
@@ -117,13 +117,13 @@ void MenuOptions::addAppointment(int sockfd, char *buf) {
 		send(sockfd, beginTime.c_str(), 127, 0);
 		send(sockfd, endTime.c_str(), 127, 0);
 
-		numbytes = recv(sockfd, buf, 127, 0);
-		buf[numbytes] = '\0';
-		std::string success = buf;
+		bytes = recv(sockfd, buffer, 127, 0);
+		buffer[bytes] = '\0';
+		std::string success = buffer;
 		if(!success.compare("Success")){
 			conflict = false;
 		}else{
-			std::cout << "There is already an appointment at that time please reschedule\n";
+			std::cout << "Already an appointment at same time\n";
 			beginTime = this->getTimeDate("NEW");
 			endTime = this->getTimeDate("NEW");
 		}
@@ -132,26 +132,26 @@ void MenuOptions::addAppointment(int sockfd, char *buf) {
 	send(sockfd, memo.c_str(), 127, 0);
 	send(sockfd, place.c_str(), 127, 0);
 }
-void MenuOptions::deleteAppointment(int sockfd,char * buf) {
-	long numbytes;
+void MenuOptions::deleteAppointment(int sockfd,char * buffer) {
+	long bytes;
 
-	if ((numbytes = recv(sockfd, buf, 512, 0)) == -1) {
+	if ((bytes = recv(sockfd, buffer, 512, 0)) == -1) {
 		perror("recv");
 		exit(1);
 	}
-	buf[numbytes] = '\0';
-	printf("[Server]: %s\n", buf);
+	buffer[bytes] = '\0';
+	printf("[Server]: %s\n", buffer);
 	std::string beginTime = this->getTimeDate("OLD");
 	send(sockfd, beginTime.c_str(), 127, 0);
 }
-void MenuOptions::updateAppointment(int sockfd,char * buf) {
-	long numbytes;
-	if ((numbytes = recv(sockfd, buf, 512, 0)) == -1) {
+void MenuOptions::updateAppointment(int sockfd,char * buffer) {
+	long bytes;
+	if ((bytes = recv(sockfd, buffer, 512, 0)) == -1) {
 		perror("recv");
 		exit(1);
 	}
-	buf[numbytes] = '\0';
-	printf("[Server]: %s\n", buf);
+	buffer[bytes] = '\0';
+	printf("[Server]: %s\n", buffer);
 	std::string oldBeginDate = this->getTimeDate("OLD");
 	std::string newBeginDate = this->getTimeDate("UPDATE");
 	std::string newEndDate = this->getTimeDate("END");
@@ -163,13 +163,13 @@ void MenuOptions::updateAppointment(int sockfd,char * buf) {
 		send(sockfd, newBeginDate.c_str(), 127, 0);
 		send(sockfd, newEndDate.c_str(), 127, 0);
 
-		numbytes = recv(sockfd, buf, 127, 0);
-		buf[numbytes] = '\0';
-		std::string success = buf;
+		bytes = recv(sockfd, buffer, 127, 0);
+		buffer[bytes] = '\0';
+		std::string success = buffer;
 		if(!success.compare("Success")){
 			conflict = false;
 		}else{
-			std::cout << "There is already an appointment at that time please reschedule\n";
+			std::cout << "Already an appointment at same time\n";
 			newBeginDate = this->getTimeDate("UPDATE");
 			newEndDate = this->getTimeDate("UPDATE");
 		}
@@ -178,12 +178,12 @@ void MenuOptions::updateAppointment(int sockfd,char * buf) {
 	send(sockfd, newPlace.c_str(), 127, 0);
 	send(sockfd, oldBeginDate.c_str(), 127, 0);
 }
-void MenuOptions::displayAppointTime(int sockfd,char * buf) {
+void MenuOptions::displayAppointTime(int sockfd,char * buffer) {
 	std::string beginTime = this->getTimeDate("OLD");
 	send(sockfd, beginTime.c_str(), 127, 0);
 }
-void MenuOptions::displayAppointRange(int sockfd,char * buf) {
-	long numbytes;
+void MenuOptions::displayAppointRange(int sockfd,char * buffer) {
+	long bytes;
 	std::string startDate = this->getTimeDate("START");
 	std::string endDate = this->getTimeDate("END");
 
@@ -192,37 +192,37 @@ void MenuOptions::displayAppointRange(int sockfd,char * buf) {
 	send(sockfd, startDate.c_str(), 127, 0);
 	send(sockfd, endDate.c_str(), 127, 0);
 
-	numbytes = recv(sockfd, buf, 512, 0);
-	buf[numbytes] = '\0';
-	printf("[Server]: %s\n", buf);
+	bytes = recv(sockfd, buffer, 512, 0);
+	buffer[bytes] = '\0';
+	printf("[Server]: %s\n", buffer);
 }
-void MenuOptions::changeName(int sockfd,char * buf) {
+void MenuOptions::changeName(int sockfd,char * buffer) {
 	std::string input;
-	std::cout << "Please enter name\n";
+	std::cout << "Enter name\n";
 	std::getline(std::cin, input);
 	send(sockfd, input.c_str(), 127, 0);
 }
-void MenuOptions::changePassword(int sockfd,char * buf) {
+void MenuOptions::changePassword(int sockfd,char * buffer) {
 	std::string input = "";
-	std::cout << "Please enter password\n";
+	std::cout << "Enter password\n";
 	std::getline(std::cin, input);
 	send(sockfd, input.c_str(), 127, 0);
 }
-void MenuOptions::changePhone(int sockfd,char * buf) {
+void MenuOptions::changePhone(int sockfd,char * buffer) {
 	std::string input = "";
-	std::cout << "Please enter phone consisting of only 10 digits\n";
+	std::cout << "Enter 10 digit phone number\n";
 	std::getline(std::cin, input);
 	send(sockfd, input.c_str(), 127, 0);
 }
-void MenuOptions::changeEmail(int sockfd,char * buf) {
+void MenuOptions::changeEmail(int sockfd,char * buffer) {
 	std::string input = "";
-	std::cout << "Please enter your email\n";
+	std::cout << "Enter your email\n";
 	std::getline(std::cin, input);
 	send(sockfd, input.c_str(), 127, 0);
 }
-void MenuOptions::deleteUser(int sockfd,char * buf) {
+void MenuOptions::deleteUser(int sockfd,char * buffer) {
 	std::string input = "";
-	std::cout << "Are you sure Y/N\n";
+	std::cout << "Delete user this user account Y/N\n";
 	std::getline(std::cin, input);
 	send(sockfd, input.c_str(), 127, 0);
 	if(!input.compare("Y") || !input.compare("y")){
@@ -230,32 +230,17 @@ void MenuOptions::deleteUser(int sockfd,char * buf) {
 	}
 }
 std::string MenuOptions::getUserName() {
-	bool validated = false;
+
 	std::string input;
-	while(!validated){
-		std::cout << "Please enter username\n";
-		std::getline(std::cin, input);
-		if (input.find(";") != std::string::npos) {
-			std::cout << "Username cannot contain the ; character" << '\n';
-		}else{
-			validated = true;
-		}
-	}
+	std::cout << "Enter username\n";
+	std::getline(std::cin, input);
 	return input;
 }
 
 std::string MenuOptions::getPassword() {
-	bool validated = false;
 	std::string input;
-	while(!validated){
-		std::cout << "Please enter password\n";
-		std::getline(std::cin, input);
-		if (input.find(";") != std::string::npos) {
-			std::cout << "Password cannot contain the ; character" << '\n';
-		}else{
-			validated = true;
-		}
-	}
+	std::cout << "Enter password\n";
+	std::getline(std::cin, input);
 	return input;
 }
 
@@ -264,7 +249,7 @@ std::string MenuOptions::getTimeDate(std::string dateType) {
 	std::string input;
 	while(!validated){
 		if(!dateType.compare("OLD")){
-			std::cout << "Please enter old appointment time (24 hour) & date in the format hh:mm mm/dd/yyyy\n";
+			std::cout << "Please enter current appointment time (24 hour) & date in the format hh:mm mm/dd/yyyy\n";
 		}else if(!dateType.compare("UPDATE")){
 			std::cout << "Please enter updated new appointment time (24 hour) & date in the format hh:mm mm/dd/yyyy\n";
 		}else if(!dateType.compare("START")){
@@ -286,92 +271,57 @@ std::string MenuOptions::getTimeDate(std::string dateType) {
 }
 
 std::string MenuOptions::getMemo(std::string dateType) {
-	bool validated = false;
+
 	std::string input;
-	while(!validated){
-		if(!dateType.compare("OLD")){
-			std::cout << "Please enter old appointment reason\n";
-		}else if(!dateType.compare("UPDATE")){
-			std::cout << "Please enter updated appointment reason\n";
-		}else {
-			std::cout << "Please enter new appointment reason\n";
-		}
-		std::getline(std::cin, input);
-		if (input.find(";") != std::string::npos) {
-			std::cout << "Your appointment reason cannot contain the ; character" << '\n';
-		}else{
-			validated = true;
-		}
+
+	if(!dateType.compare("OLD")){
+		std::cout << "Please enter old appointment memo\n";
+	}else if(!dateType.compare("UPDATE")){
+		std::cout << "Please enter updated appointment memo\n";
+	}else {
+		std::cout << "Please enter new appointment memo\n";
 	}
+	std::getline(std::cin, input);
+
 	return input;
 }
 
 std::string MenuOptions::getPlace(std::string dateType) {
-	bool validated = false;
+
 	std::string input;
-	while(!validated){
-		if(!dateType.compare("OLD")){
-			std::cout << "Please enter old appointment place\n";
-		}else if(!dateType.compare("UPDATE")){
-			std::cout << "Please enter updated appointment place\n";
-		}else {
-			std::cout << "Please enter new appointment place\n";
-		}
-		std::getline(std::cin, input);
-		if (input.find(";") != std::string::npos) {
-			std::cout << "Your appointment place cannot contain the ; character" << '\n';
-		}else{
-			validated = true;
-		}
+	if(!dateType.compare("OLD")){
+		std::cout << "Please enter old appointment place\n";
+	}else if(!dateType.compare("UPDATE")){
+		std::cout << "Please enter updated appointment place\n";
+	}else {
+		std::cout << "Please enter new appointment place\n";
 	}
+	std::getline(std::cin, input);
+
 	return input;
 }
 
-
 std::string getName() {
-	bool validated = false;
 	std::string input;
-	while(!validated){
-		std::cout << "Please enter name\n";
-		std::getline(std::cin, input);
-		if (input.find(";") != std::string::npos) {
-			std::cout << "Your name cannot contain the ; character" << '\n';
-		}else{
-			validated = true;
-		}
-	}
+	std::cout << "Please enter name\n";
+	std::getline(std::cin, input);
+
 	return input;
 }
 
 std::string MenuOptions::getEmail() {
-	bool validated = false;
 	std::string input;
-	while(!validated){
-		std::cout << "Please enter your email\n";
-		std::getline(std::cin, input);
-		if (input.find(";") != std::string::npos) {
-			std::cout << "Your email cannot contain the ; character" << '\n';
-		}else{
-			validated = true;
-		}
-	}
+	std::cout << "Please enter your email\n";
+	std::getline(std::cin, input);
+
 	return input;
 }
 
-
 std::string MenuOptions::getPhone() {
-	bool validated = false;
 	std::string input;
-	while(!validated){
-		std::cout << "Please enter phone consisting of only 10 digits\n";
-		std::getline(std::cin, input);
-		std::regex pattern("^\\d{10}$");
-		if (!std::regex_match(input, pattern)) {
-			std::cout << "Your phone can only consist of 10 digits" << '\n';
-		}else{
-			validated = true;
-		}
-	}
+	std::cout << "Please enter phone consisting of only 10 digits\n";
+	std::getline(std::cin, input);
+
 	return input;
 }
 
