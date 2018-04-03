@@ -200,141 +200,166 @@ int main(int argc, char *argv[]){
 
 			if(!input.compare("1")){
 				//Add appointment
-				if ((numbytes = recv(sockfd, buf, 512, 0)) == -1) {
-					perror("recv");
-					exit(1);
-				}
-				buf[numbytes] = '\0';
-				printf("[Server]: %s\n", buf);
-				std::string beginTime = menu.getTimeDate("NEW");
-				std::string endTime = menu.getTimeDate("END");
-				std::string memo = menu.getMemo("NEW");
-				std::string place = menu.getPlace("NEW");
+				menu.addAppointment(sockfd, buf);
 
-
-				bool conflict = true;
-				while (conflict){
-					send(sockfd, beginTime.c_str(), 127, 0);
-					send(sockfd, endTime.c_str(), 127, 0);
-
-					numbytes = recv(sockfd, buf, 127, 0);
-					buf[numbytes] = '\0';
-					std::string success = buf;
-					if(!success.compare("Success")){
-						conflict = false;
-					}else{
-						std::cout << "There is already an appointment at that time please reschedule\n";
-						beginTime = menu.getTimeDate("NEW");
-						endTime = menu.getTimeDate("NEW");
-					}
-				}
-
-				send(sockfd, memo.c_str(), 127, 0);
-				send(sockfd, place.c_str(), 127, 0);
+//				if ((numbytes = recv(sockfd, buf, 512, 0)) == -1) {
+//					perror("recv");
+//					exit(1);
+//				}
+//				buf[numbytes] = '\0';
+//				printf("[Server]: %s\n", buf);
+//				std::string beginTime = menu.getTimeDate("NEW");
+//				std::string endTime = menu.getTimeDate("END");
+//				std::string memo = menu.getMemo("NEW");
+//				std::string place = menu.getPlace("NEW");
+//
+//
+//				bool conflict = true;
+//				while (conflict){
+//					send(sockfd, beginTime.c_str(), 127, 0);
+//					send(sockfd, endTime.c_str(), 127, 0);
+//
+//					numbytes = recv(sockfd, buf, 127, 0);
+//					buf[numbytes] = '\0';
+//					std::string success = buf;
+//					if(!success.compare("Success")){
+//						conflict = false;
+//					}else{
+//						std::cout << "There is already an appointment at that time please reschedule\n";
+//						beginTime = menu.getTimeDate("NEW");
+//						endTime = menu.getTimeDate("NEW");
+//					}
+//				}
+//
+//				send(sockfd, memo.c_str(), 127, 0);
+//				send(sockfd, place.c_str(), 127, 0);
 			}
 			else if(!input.compare("2")){
 				//Remove appointment
-				if ((numbytes = recv(sockfd, buf, 512, 0)) == -1) {
-					perror("recv");
-					exit(1);
-				}
-				buf[numbytes] = '\0';
-				printf("[Server]: %s\n", buf);
-				std::string beginTime = menu.getTimeDate("OLD");
-				send(sockfd, beginTime.c_str(), 127, 0);
+				menu.deleteAppointment(sockfd, buf);
+
+//				if ((numbytes = recv(sockfd, buf, 512, 0)) == -1) {
+//					perror("recv");
+//					exit(1);
+//				}
+//				buf[numbytes] = '\0';
+//				printf("[Server]: %s\n", buf);
+//				std::string beginTime = menu.getTimeDate("OLD");
+//				send(sockfd, beginTime.c_str(), 127, 0);
 			}
 			else if(!input.compare("3")){
 				//Update appointment
-				if ((numbytes = recv(sockfd, buf, 512, 0)) == -1) {
-					perror("recv");
-					exit(1);
-				}
-				buf[numbytes] = '\0';
-				printf("[Server]: %s\n", buf);
-				std::string oldBeginDate = menu.getTimeDate("OLD");
-				std::string newBeginDate = menu.getTimeDate("UPDATE");
-				std::string newEndDate = menu.getTimeDate("END");
-				std::string newMemo = menu.getMemo("UPDATE");
-				std::string newPlace = menu.getPlace("UPDATE");
+				menu.updateAppointment(sockfd, buf);
 
-				bool conflict = true;
-				while (conflict){
-					send(sockfd, newBeginDate.c_str(), 127, 0);
-					send(sockfd, newEndDate.c_str(), 127, 0);
-
-					numbytes = recv(sockfd, buf, 127, 0);
-					buf[numbytes] = '\0';
-					std::string success = buf;
-					if(!success.compare("Success")){
-						conflict = false;
-					}else{
-						std::cout << "There is already an appointment at that time please reschedule\n";
-						newBeginDate = menu.getTimeDate("UPDATE");
-						newEndDate = menu.getTimeDate("UPDATE");
-					}
-				}
-				send(sockfd, newMemo.c_str(), 127, 0);
-				send(sockfd, newPlace.c_str(), 127, 0);
-				send(sockfd, oldBeginDate.c_str(), 127, 0);
+//				if ((numbytes = recv(sockfd, buf, 512, 0)) == -1) {
+//					perror("recv");
+//					exit(1);
+//				}
+//				buf[numbytes] = '\0';
+//				printf("[Server]: %s\n", buf);
+//				std::string oldBeginDate = menu.getTimeDate("OLD");
+//				std::string newBeginDate = menu.getTimeDate("UPDATE");
+//				std::string newEndDate = menu.getTimeDate("END");
+//				std::string newMemo = menu.getMemo("UPDATE");
+//				std::string newPlace = menu.getPlace("UPDATE");
+//
+//				bool conflict = true;
+//				while (conflict){
+//					send(sockfd, newBeginDate.c_str(), 127, 0);
+//					send(sockfd, newEndDate.c_str(), 127, 0);
+//
+//					numbytes = recv(sockfd, buf, 127, 0);
+//					buf[numbytes] = '\0';
+//					std::string success = buf;
+//					if(!success.compare("Success")){
+//						conflict = false;
+//					}else{
+//						std::cout << "There is already an appointment at that time please reschedule\n";
+//						newBeginDate = menu.getTimeDate("UPDATE");
+//						newEndDate = menu.getTimeDate("UPDATE");
+//					}
+//				}
+//				send(sockfd, newMemo.c_str(), 127, 0);
+//				send(sockfd, newPlace.c_str(), 127, 0);
+//				send(sockfd, oldBeginDate.c_str(), 127, 0);
 
 			}
 			else if(!input.compare("4")){
 				//Get Appointment at a time
-				std::string beginTime = menu.getTimeDate("OLD");
-				send(sockfd, beginTime.c_str(), 127, 0);
+				menu.displayAppointTime(sockfd, buf);
+
+
+
+
+//				std::string beginTime = menu.getTimeDate("OLD");
+//				send(sockfd, beginTime.c_str(), 127, 0);
 			}
 			else if(!input.compare("5")){
 				//Get Appointment in range
-				std::string startDate = menu.getTimeDate("START");
-				std::string endDate = menu.getTimeDate("END");
+				menu.displayAppointRange(sockfd, buf);
 
-				std::cout << startDate << " " << endDate << "\n";
 
-				send(sockfd, startDate.c_str(), 127, 0);
-				send(sockfd, endDate.c_str(), 127, 0);
-
-				numbytes = recv(sockfd, buf, 512, 0);
-				buf[numbytes] = '\0';
-				printf("[Server]: %s\n", buf);
+//				std::string startDate = menu.getTimeDate("START");
+//				std::string endDate = menu.getTimeDate("END");
+//
+//				std::cout << startDate << " " << endDate << "\n";
+//
+//				send(sockfd, startDate.c_str(), 127, 0);
+//				send(sockfd, endDate.c_str(), 127, 0);
+//
+//				numbytes = recv(sockfd, buf, 512, 0);
+//				buf[numbytes] = '\0';
+//				printf("[Server]: %s\n", buf);
 			}
 			else if(!input.compare("6")){
 				//A) Modify name
+				menu.changeName(sockfd, buf);
 
-				std::string input;
-				std::cout << "Please enter name\n";
-				std::getline(std::cin, input);
-				send(sockfd, input.c_str(), 127, 0);
+
+//				std::string input;
+//				std::cout << "Please enter name\n";
+//				std::getline(std::cin, input);
+//				send(sockfd, input.c_str(), 127, 0);
 
 			}else if(!input.compare("7")){
 				//Modify password
-				input = "";
-				std::cout << "Please enter password\n";
-				std::getline(std::cin, input);
-				send(sockfd, input.c_str(), 127, 0);
+				menu.changePassword(sockfd, buf);
+
+//				input = "";
+//				std::cout << "Please enter password\n";
+//				std::getline(std::cin, input);
+//				send(sockfd, input.c_str(), 127, 0);
 			}
 			else if(!input.compare("8")){
 				//Modify phone number
-				input = "";
-				std::cout << "Please enter phone consisting of only 10 digits\n";
-				std::getline(std::cin, input);
-				send(sockfd, input.c_str(), 127, 0);
+				menu.changePhone(sockfd, buf);
+
+//				input = "";
+//				std::cout << "Please enter phone consisting of only 10 digits\n";
+//				std::getline(std::cin, input);
+//				send(sockfd, input.c_str(), 127, 0);
 			}
 			else if(!input.compare("9")){
 				//Modify email
-				input = "";
-				std::cout << "Please enter your email\n";
-				std::getline(std::cin, input);
-				send(sockfd, input.c_str(), 127, 0);
+				menu.changeEmail(sockfd, buf);
+
+//				input = "";
+//				std::cout << "Please enter your email\n";
+//				std::getline(std::cin, input);
+//				send(sockfd, input.c_str(), 127, 0);
 			}
 			else if(!input.compare("10")){
 				//Delete Account
-				std::cout << "Are you sure Y/N\n";
-				std::getline(std::cin, input);
-				send(sockfd, input.c_str(), 127, 0);
-				if(!input.compare("Y") || !input.compare("y")){
-					close(sockfd);
-					return(0);
-				}
+				menu.deleteUser(sockfd, buf);
+				break;
+
+//				std::cout << "Are you sure Y/N\n";
+//				std::getline(std::cin, input);
+//				send(sockfd, input.c_str(), 127, 0);
+//				if(!input.compare("Y") || !input.compare("y")){
+//					close(sockfd);
+//					return(0);
+//				}
 			}
 			else if(!input.compare("11")){
 				std::cout << "Good Bye!\n";

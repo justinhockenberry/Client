@@ -97,7 +97,138 @@ bool MenuOptions::newAccount(int sockfd, char *buf, bool loggedIn) {
 	//			validated = true;
 	return loggedIn = true;
 }
+void MenuOptions::addAppointment(int sockfd, char *buf) {
+	long numbytes;
 
+	if ((numbytes = recv(sockfd, buf, 512, 0)) == -1) {
+		perror("recv");
+		exit(1);
+	}
+	buf[numbytes] = '\0';
+	printf("[Server]: %s\n", buf);
+	std::string beginTime = this->getTimeDate("NEW");
+	std::string endTime = this->getTimeDate("END");
+	std::string memo = this->getMemo("NEW");
+	std::string place = this->getPlace("NEW");
+
+
+	bool conflict = true;
+	while (conflict){
+		send(sockfd, beginTime.c_str(), 127, 0);
+		send(sockfd, endTime.c_str(), 127, 0);
+
+		numbytes = recv(sockfd, buf, 127, 0);
+		buf[numbytes] = '\0';
+		std::string success = buf;
+		if(!success.compare("Success")){
+			conflict = false;
+		}else{
+			std::cout << "There is already an appointment at that time please reschedule\n";
+			beginTime = this->getTimeDate("NEW");
+			endTime = this->getTimeDate("NEW");
+		}
+	}
+
+	send(sockfd, memo.c_str(), 127, 0);
+	send(sockfd, place.c_str(), 127, 0);
+}
+void MenuOptions::deleteAppointment(int sockfd,char * buf) {
+	long numbytes;
+
+	if ((numbytes = recv(sockfd, buf, 512, 0)) == -1) {
+		perror("recv");
+		exit(1);
+	}
+	buf[numbytes] = '\0';
+	printf("[Server]: %s\n", buf);
+	std::string beginTime = this->getTimeDate("OLD");
+	send(sockfd, beginTime.c_str(), 127, 0);
+}
+void MenuOptions::updateAppointment(int sockfd,char * buf) {
+	long numbytes;
+	if ((numbytes = recv(sockfd, buf, 512, 0)) == -1) {
+		perror("recv");
+		exit(1);
+	}
+	buf[numbytes] = '\0';
+	printf("[Server]: %s\n", buf);
+	std::string oldBeginDate = this->getTimeDate("OLD");
+	std::string newBeginDate = this->getTimeDate("UPDATE");
+	std::string newEndDate = this->getTimeDate("END");
+	std::string newMemo = this->getMemo("UPDATE");
+	std::string newPlace = this->getPlace("UPDATE");
+
+	bool conflict = true;
+	while (conflict){
+		send(sockfd, newBeginDate.c_str(), 127, 0);
+		send(sockfd, newEndDate.c_str(), 127, 0);
+
+		numbytes = recv(sockfd, buf, 127, 0);
+		buf[numbytes] = '\0';
+		std::string success = buf;
+		if(!success.compare("Success")){
+			conflict = false;
+		}else{
+			std::cout << "There is already an appointment at that time please reschedule\n";
+			newBeginDate = this->getTimeDate("UPDATE");
+			newEndDate = this->getTimeDate("UPDATE");
+		}
+	}
+	send(sockfd, newMemo.c_str(), 127, 0);
+	send(sockfd, newPlace.c_str(), 127, 0);
+	send(sockfd, oldBeginDate.c_str(), 127, 0);
+}
+void MenuOptions::displayAppointTime(int sockfd,char * buf) {
+	std::string beginTime = this->getTimeDate("OLD");
+	send(sockfd, beginTime.c_str(), 127, 0);
+}
+void MenuOptions::displayAppointRange(int sockfd,char * buf) {
+	long numbytes;
+	std::string startDate = this->getTimeDate("START");
+	std::string endDate = this->getTimeDate("END");
+
+	std::cout << startDate << " " << endDate << "\n";
+
+	send(sockfd, startDate.c_str(), 127, 0);
+	send(sockfd, endDate.c_str(), 127, 0);
+
+	numbytes = recv(sockfd, buf, 512, 0);
+	buf[numbytes] = '\0';
+	printf("[Server]: %s\n", buf);
+}
+void MenuOptions::changeName(int sockfd,char * buf) {
+	std::string input;
+	std::cout << "Please enter name\n";
+	std::getline(std::cin, input);
+	send(sockfd, input.c_str(), 127, 0);
+}
+void MenuOptions::changePassword(int sockfd,char * buf) {
+	std::string input = "";
+	std::cout << "Please enter password\n";
+	std::getline(std::cin, input);
+	send(sockfd, input.c_str(), 127, 0);
+}
+void MenuOptions::changePhone(int sockfd,char * buf) {
+	std::string input = "";
+	std::cout << "Please enter phone consisting of only 10 digits\n";
+	std::getline(std::cin, input);
+	send(sockfd, input.c_str(), 127, 0);
+}
+void MenuOptions::changeEmail(int sockfd,char * buf) {
+	std::string input = "";
+	std::cout << "Please enter your email\n";
+	std::getline(std::cin, input);
+	send(sockfd, input.c_str(), 127, 0);
+}
+void MenuOptions::deleteUser(int sockfd,char * buf) {
+	std::string input = "";
+	std::cout << "Are you sure Y/N\n";
+	std::getline(std::cin, input);
+	send(sockfd, input.c_str(), 127, 0);
+	if(!input.compare("Y") || !input.compare("y")){
+		close(sockfd);
+	}
+}
 std::string MenuOptions::getUserName() {
 	bool validated = false;
 	std::string input;
