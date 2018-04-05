@@ -85,6 +85,11 @@ int main(int argc, char *argv[]){
 
 			loggedIn = menu.newAccount(sockfd, buffer, loggedIn);
 		}
+		else if(!selection.compare("3")){
+			cout << "Connection terminated\n";
+			close(sockfd);
+			return 0;
+		}
 		else{
 			cout << "Invalid Choice\n";
 		}
