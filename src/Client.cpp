@@ -21,6 +21,9 @@
 
 #include "MenuOptions.h"
 
+using std::cout;
+using std::cin;
+
 #define PORT 336958
 #define MAXDATASIZE 512
 
@@ -43,7 +46,7 @@ int main(int argc, char *argv[]){
 		perror("gethostbyname");
 		exit(1);
 	}
-	//create a TCP socket
+
 	if((sockfd = socket(AF_INET, SOCK_STREAM, 0)) == -1){
 		perror("socket");
 		exit(1);
@@ -60,18 +63,18 @@ int main(int argc, char *argv[]){
 		exit(1);
 	}
 
-//	printf("connection has been established with server. Type any message for server\n");
+
 
 	bool loggedIn = false;
-	std::string selection;
+	string selection;
 	while(!loggedIn){
 
 
 		recv(sockfd, buffer, 512, 0);
-		std::cout << "[Server]" << buffer;
+		cout << "[Server]" << buffer;
 
 
-		std::getline(std::cin, selection);
+		getline(cin, selection);
 		send(sockfd, selection.c_str(), 127, 0);
 
 		if(!selection.compare("1")) {
@@ -83,7 +86,7 @@ int main(int argc, char *argv[]){
 			loggedIn = menu.newAccount(sockfd, buffer, loggedIn);
 		}
 		else{
-			std::cout << "Invalid Choice\n";
+			cout << "Invalid Choice\n";
 		}
 	}
 
@@ -97,7 +100,7 @@ int main(int argc, char *argv[]){
 		buffer[numbytes] = '\0';
 		printf("[Server]: %s\n", buffer);
 
-		std::getline(std::cin, selection);
+		getline(cin, selection);
 
 		numbytes=sizeof(selection.c_str());
 
@@ -111,8 +114,6 @@ int main(int argc, char *argv[]){
 				close(sockfd);
 				exit(1);
 			}
-
-//			printf("[Client]: %s\n", selection.c_str());
 
 
 			if(!selection.compare("1")){
@@ -157,11 +158,11 @@ int main(int argc, char *argv[]){
 				break;
 			}
 			else if(!selection.compare("11")){
-				std::cout << "Good Bye!\n";
+				cout << "Connection terminated\n";
 				break;
 			}
 			else{
-				std::cout << "Invalid selection\n";
+				cout << "Invalid selection\n";
 			}
 
 			if ((numbytes = recv(sockfd, buffer, 127, 0)) == -1) {
