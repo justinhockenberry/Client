@@ -30,6 +30,7 @@ using std::cin;
 int main(int argc, char *argv[]){
 	int sockfd, numbytes;
 	char buffer[MAXDATASIZE];
+	char buff[MAXDATASIZE];
 	char sendbuffer[MAXDATASIZE];
 	struct hostent *he;
 	struct sockaddr_in their_addr;
@@ -97,7 +98,6 @@ int main(int argc, char *argv[]){
 
 
 	for(;;){
-
 		if ((numbytes = recv(sockfd, buffer, 512, 0)) == -1) {
 			perror("recv");
 			exit(1);
@@ -105,64 +105,63 @@ int main(int argc, char *argv[]){
 		buffer[numbytes] = '\0';
 		printf("[Server]: %s\n", buffer);
 
-		getline(cin, selection);
+		string select;
+		getline(cin, select);
 
-		numbytes=sizeof(selection.c_str());
+		numbytes=sizeof(select.c_str());
 
-		if(numbytes == 0 || strncmp(selection.c_str(), "bye", 3) == 0){
+		if(numbytes == 0 || strncmp(select.c_str(), "bye", 3) == 0){
 			printf("Bye\n");
 			break;
 		}else {
-
-			if ((numbytes = send(sockfd, selection.c_str(), 127, 0)) == -1) {
+			if ((numbytes = send(sockfd, select.c_str(), 127, 0)) == -1) {
 				perror("send");
 				close(sockfd);
 				exit(1);
 			}
 
-
-			if(!selection.compare("1")){
+			if(!select.compare("1")){
 
 				menu.addAppointment(sockfd, buffer);
 			}
-			else if(!selection.compare("2")){
+			else if(!select.compare("2")){
 
 				menu.deleteAppointment(sockfd, buffer);
 			}
-			else if(!selection.compare("3")){
+			else if(!select.compare("3")){
 
 				menu.updateAppointment(sockfd, buffer);
 			}
-			else if(!selection.compare("4")){
+			else if(!select.compare("4")){
 
 				menu.displayAppointTime(sockfd, buffer);
 			}
-			else if(!selection.compare("5")){
+			else if(!select.compare("5")){
 
 				menu.displayAppointRange(sockfd, buffer);
 			}
-			else if(!selection.compare("6")){
+			else if(!select.compare("6")){
 
 				menu.changeName(sockfd, buffer);
 			}
-			else if(!selection.compare("7")){
+			else if(!select.compare("7")){
 
 				menu.changePassword(sockfd, buffer);
 			}
-			else if(!selection.compare("8")){
+			else if(!select.compare("8")){
 
 				menu.changePhone(sockfd, buffer);
 			}
-			else if(!selection.compare("9")){
+			else if(!select.compare("9")){
 
 				menu.changeEmail(sockfd, buffer);
 			}
-			else if(!selection.compare("10")){
+			else if(!select.compare("10")){
 
 				menu.deleteUser(sockfd, buffer);
 				break;
 			}
-			else if(!selection.compare("11")){
+			else if(!select.compare("11")){
 				cout << "Connection terminated\n";
 				break;
 			}
@@ -170,12 +169,16 @@ int main(int argc, char *argv[]){
 				cout << "Invalid selection\n";
 			}
 
-			if ((numbytes = recv(sockfd, buffer, 127, 0)) == -1) {
+			int numbyte;
+
+			if ((numbyte = recv(sockfd, buff, 127, 0)) == -1) {
 				perror("recv");
 				exit(1);
 			}
-			buffer[numbytes] = '\0';
-			printf("[Server]: %s\n", buffer);
+
+			buff[numbyte] = '\0';
+			printf("[Server]: %s\n", buff);
+
 		}
 	}
 

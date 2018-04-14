@@ -31,6 +31,8 @@ public:
 	void changePhone(int sockfd,char * buffer);
 	void changeEmail(int sockfd,char * buffer);
 	void deleteUser(int sockfd,char * buffer);
+	bool checkFormat(string timeDate);
+
 	string getUserName();
 	string getPassword();
 	string getName();

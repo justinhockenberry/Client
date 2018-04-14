@@ -16,12 +16,14 @@
 #include <netdb.h>
 #include <iostream>
 #include <regex>
+#include <sstream>
 
 #include "MenuOptions.h"
 
 using std::cout;
 using std::cin;
 using std::regex;
+using std::stringstream;
 
 bool MenuOptions::login(int sockfd, char *buffer, bool loggedIn) {
 
@@ -262,14 +264,47 @@ string MenuOptions::getTimeDate(string number) {
 			cout << "Enter appointment time (24 hour) & date in the format hh:mm mm/dd/yyyy\n";
 		}
 		getline(cin, input);
-		regex pattern("^\\d{2}[\\:]\\d{2}[[:space:]]\\d{2}[\\/]\\d{2}[\\/]\\d{4}$");
-		if (!regex_match(input, pattern)) {
-			cout << "Time & date must be in hh:mm mm/dd/yyyy format please try again" << '\n';
-		}else{
-			formatCheck = true;
-		}
+		formatCheck = checkFormat(input);
 	}
 	return input;
+}
+bool MenuOptions::checkFormat(string timeDate) {
+	bool formatCheck = false;
+	stringstream ss0;
+	stringstream ss1;
+	stringstream ss2;
+	stringstream ss3;
+	string colon;
+	string space;
+	string slash00;
+	string slash01;
+
+	ss0 << timeDate[2];
+	ss0 >> colon;
+	ss1 << timeDate[5];
+	ss1 >> space;
+	ss2 << timeDate[8];
+	ss2 >> slash00;
+	ss3 << timeDate[11];
+	ss3 >> slash01;
+
+	if(!colon.compare(":"))
+	{
+		if(!space.compare("")){
+			if(!slash00.compare("/")){
+				if(!slash01.compare("/")){
+					formatCheck = true;
+				}
+			}
+		}
+	}
+	if(!formatCheck){
+		cout << "Time & date must be in hh:mm mm/dd/yyyy format please try again" << '\n';
+	}
+
+
+
+	return formatCheck;
 }
 
 string MenuOptions::getMemo(string number) {
